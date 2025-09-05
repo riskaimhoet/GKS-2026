@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GKS-G 2026 Countdown</title>
+  <style>
+    body {
+      background-color: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .countdown {
+      display: flex;
+      gap: 20px;
+    }
+
+    .box {
+      background: #222;
+      padding: 20px 30px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .label {
+      font-size: 0.9rem;
+      margin-top: 10px;
+      display: block;
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+  <h1>GKS-G 2026</h1>
+  <div class="countdown">
+    <div class="box">
+      <span id="months">00</span>
+      <span class="label">Months</span>
+    </div>
+    <div class="box">
+      <span id="weeks">00</span>
+      <span class="label">Weeks</span>
+    </div>
+    <div class="box">
+      <span id="days">00</span>
+      <span class="label">Days</span>
+    </div>
+  </div>
+
+  <script>
+    // 🗓 Ganti target tanggal sesuai kebutuhan
+    const targetDate = new Date("2026-02-15T00:00:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        document.querySelector(".countdown").innerHTML = "🎉 Event Started!";
+        return;
+      }
+
+      // Hitung hari total
+      const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+      // Bagi ke months, weeks, days
+      const months = Math.floor(totalDays / 30); // kira-kira 30 hari/bulan
+      const weeks = Math.floor((totalDays % 30) / 7);
+      const days = totalDays % 7;
+
+      document.getElementById("months").innerText = String(months).padStart(2, "0");
+      document.getElementById("weeks").innerText = String(weeks).padStart(2, "0");
+      document.getElementById("days").innerText = String(days).padStart(2, "0");
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000 * 60 * 60); // update tiap jam
+  </script>
+</body>
+</html>
