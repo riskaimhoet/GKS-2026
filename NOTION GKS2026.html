@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Greetings</title>
+  <style>
+    body {
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #000000;
+    }
+    .widget {
+      padding: 24px 36px;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      max-width: 95%;
+      margin: auto;
+      border: 3px solid #000;
+      border-radius: 8px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+    .greet { font-size: 2.4rem; font-family: serif; margin-bottom: 8px; }
+    .date  { font-family: monospace; font-size: 1.1rem; margin-bottom: 8px; letter-spacing: 1px; }
+    .clock { font-family: monospace; font-size: 1.8rem; }
+    .time { display: inline-block; min-width: 28px; }
+    .colon { display: inline-block; padding: 0 6px; }
+    .ampm  { margin-left: 8px; font-size: 0.9rem; vertical-align: super; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="widget">
+      <div class="greet" id="greet">이카, 잘 자</div>
+      <div class="date" id="date">금요일, 2025년 9월 5일</div>
+      <div class="clock">
+        <span class="time" id="hour">04</span>
+        <span class="colon">:</span>
+        <span class="time" id="min">50</span>
+        <span class="colon">:</span>
+        <span class="time" id="sec">33</span>
+        <span class="ampm" id="ampm">AM</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function displayGreetings(today) {
+      const hrs = today.getHours();
+      const name = "이카";
+      let greet = "";
+      if (hrs < 12) greet = '이카, 좋은 아침';
+      else if (hrs >= 12 && hrs < 18) greet = '이카, 좋은 오후';
+      else greet = '이카, 잘 자';
+      document.getElementById('greet').textContent = greet.trim();
+    }
+
+    function displayDate(today) {
+      const days = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+      const months = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+      const dayName = days[today.getDay()];
+      const monthName = months[today.getMonth()];
+      const date = today.getDate() + '일';
+      const year = today.getFullYear() + '년';
+      document.getElementById('date').textContent = `${dayName}, ${year} ${monthName} ${date}`;
+    }
+
+    function padZeros(num) {
+      return String(num).padStart(2, '0');
+    }
+
+    function twelveHour(hour24) {
+      if (hour24 === 0) return 12;
+      if (hour24 > 12) return hour24 - 12;
+      return hour24;
+    }
+
+    function displayClock(today) {
+      const hour24 = today.getHours();
+      const hrs12 = padZeros(twelveHour(hour24));
+      const mins = padZeros(today.getMinutes());
+      const secs = padZeros(today.getSeconds());
+      const ampm = hour24 >= 12 ? 'PM' : 'AM';
+
+      document.getElementById('hour').textContent = hrs12;
+      document.getElementById('min').textContent = mins;
+      document.getElementById('sec').textContent = secs;
+      document.getElementById('ampm').textContent = ampm;
+    }
+
+    function updateWidget() {
+      const now = new Date();
+      displayGreetings(now);
+      displayDate(now);
+      displayClock(now);
+    }
+
+    updateWidget();
+    setInterval(updateWidget, 1000);
+  </script>
+</body>
+</html>
